@@ -1,0 +1,64 @@
+﻿@using Blogs.Models
+@model BlogEntry
+@{
+       Layout = null;
+}
+
+<head>
+    <title></title>
+   
+</head>
+
+<body style="background-color: teal; width:1200px; height: 900px">
+    <div style="width:400px; margin:0 auto; vertical-align:central">
+
+        @if (Model != null && Model.Author != null && Model.Author != "")
+        {
+            //using (Html.BeginForm("Comment", "Blog", new {id = Model.Id}, FormMethod.Post))
+            using (Html.BeginForm("Comment", "Blog", FormMethod.Post, new { id = "comment-form" }))
+            {
+                if((bool)Session["canwrite"] == true && Session["userid"].ToString() == Model.AuthorId)
+                { 
+                      <h4>@Html.ActionLink("Delete", "DeleteBlog", "Blog", new { id = Model.Id }, null)     
+                      @Html.ActionLink("Edit", "EditBlog", "Blog", new { id = Model.Id }, null)</h4>
+                }
+                if (Model.isVisible)
+                {
+                    
+                    <h3 style="font-weight:bold; color:silver">Title: @Model.Title</h3>
+                    <h4 style="color:silver">Author: @Model.Author</h4>
+                    <h5 style="color:silver">Date Posted: @Model.DatePosted.ToShortDateString() @Model.DatePosted.ToShortTimeString()</h5>
+                    <h5>Last Edited: @Model.LastEdited.ToShortDateString() @Model.LastEdited.ToShortTimeString()</h5>
+
+                    <h4 style="color:gold; font-style:italic">@Html.Raw(Model.Content)</h4>
+                    
+                    if (Model.isAcceptingComments)
+                    {
+                    <h3 style="color:silver">Comments: </h3>
+                    foreach (Comment com in Model.ArticleComments)
+                    {
+                            <h5 style="color:silver">@com.datePosted.ToShortDateString() @com.datePosted.ToShortTimeString() @com.author Posted: </h5>
+                            <h3 style="color:gold">@com.content</h3>
+                            if(Session["userid"].ToString() == Model.AuthorId)
+                            { 
+                            <h5>@Html.ActionLink("Delete Comment", "DeleteComment", new { id = com.id, blogId = Model.Id }, null)</h5>
+                            }
+                    }
+
+                    
+                        <div>
+                            @Html.ActionLink("Post Comment", "CreateComment", new { modelId = Model.Id })
+                        </div>
+                    }
+                    
+                    <h4 style="color:silver">Tags:</h4>
+                    foreach (Tag tag in Model.ArticleTags)
+                    { 
+                        <h5 style="color:gold">@tag.name</h5>
+                    }
+                    @Html.ActionLink("Tag Article", "CreateTag", new { modelId = Model.Id })
+                }
+            }
+        }
+    </div>
+</body>

@@ -1,0 +1,117 @@
+﻿@using Blogs.Models
+@using Blogs.Models.ViewModels
+@model BlogEntryViewModel
+@{
+    ViewBag.Title = "Index";
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //hide submit button as we don't need it when JS is enabled
+            $('#submit-button-span').css("display", "none");
+
+            //listen to form submit requests
+            $('#blog-form').submit(function (event) {
+
+                //submit changes ajax style so cancel form request
+                event.preventDefault();
+
+                //get selected value
+                var blogId = $('#blog-select').val();
+
+                //get new item using an ajax call
+                $.ajax({
+                    url: "@Url.Action("BlogEntryAsync")",
+                    data: { id: blogId },
+                    dataType: "html",
+                    success: function (result) {
+                        $('#blog-content').html(result);
+                    }
+                });
+            });
+
+            //listen for changes in the blog selector
+            $('#blog-select').change(function () {
+                $('#blog-form').submit();
+            });
+        });
+    </script>
+}
+
+<body style="background-color:teal">
+    @using (Html.BeginForm("BlogIndex", "Blog", FormMethod.Post, new { id = "blog-form" }))
+    {
+        <label for="blog-select" style="color:silver">
+            Select another blog entry:
+        </label>
+        <select id="blog-select" name="id">
+            @foreach (BlogEntry entry in Model.AllEntries)
+            {
+                string selected = "";
+                if (Model.CurrentBlogEntry != null)
+                {
+                    if (entry.Id == Model.CurrentBlogEntry.Id)
+                    {
+                        selected = @"selected=""selected""";
+                    }
+                }
+                <option value="@entry.Id" @selected>@entry.Title</option>
+            }
+        </select>
+        <span id="submit-button-span">
+            <input type="submit" id="submit-button" value="Go" />
+        </span>
+    }
+
+
+    @using (Html.BeginForm("BlogIndex", "Blog", FormMethod.Post, new { id = "blog-form" }))
+    {
+        <label for="tag-select" style="color:silver">
+            Select A Tag:
+        </label>
+        <select id="tag-select" name="id">
+            @foreach (Tag tag in Model.AllTags)
+            {
+                string selected = "";
+                if (Model.CurrentBlogEntry != null)
+                {
+                    if (tag.articleId == Model.CurrentBlogEntry.Id)
+                    {
+                        selected = @"selected=""selected""";
+                    }
+                }
+                <option value="@tag.articleId" @selected>@tag.name</option>
+            }
+        </select>
+        <span id="submit-button-span-tag">
+            <input type="submit" id="submit-button-tag" value="Go" />
+        </span>
+    }
+
+
+    <h3>
+    @if ((bool)Session["canwrite"] == true)
+    {
+        @Html.ActionLink("Create new entry", "CreateBlog")
+    }
+         
+    @Html.ActionLink("Logout", "Logout", "Home")
+         
+    @Html.ActionLink("Account", "Edit", "Home")
+         
+    @if ((bool)Session["isadmin"] == true)
+    {
+        @Html.ActionLink("Manage Users", "Index", "Home")
+    }
+    </h3>
+</body>
+    <article id="blog-content">
+
+        @if (Model.CurrentBlogEntry != null)
+        {
+            @Html.Partial("_BlogEntry", Model.CurrentBlogEntry)
+        }
+
+    </article>

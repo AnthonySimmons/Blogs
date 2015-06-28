@@ -1,0 +1,27 @@
+﻿@using cpts483.Models
+@model BlogEntry
+@{
+    ViewBag.Title = "Create";
+}
+<h4>@Html.ActionLink("My Blogs", "Index", "Wednesday", new { id = 1 }, null)</h4>
+<h2>Create Blog Entry</h2>
+@using(Html.BeginForm())
+{
+    <div>
+        Title: <br />
+        @Html.TextBoxFor(m => m.Title)
+    </div>
+    <div>
+        Content: <br />
+        @Html.TextAreaFor(m => m.Content, new { rows = 8, cols = 100, style = "max-width: 700px;" })
+    </div>
+   <div>
+        @Html.CheckBoxFor(m => m.isAcceptingComments)
+        @Html.LabelFor(m => m.isAcceptingComments)
+    </div>
+    <div>
+        @Html.CheckBoxFor(m => m.isVisible)
+        @Html.LabelFor(m => m.isVisible)
+    </div>
+    <input id="btnCreate" type="submit" value="Create Entry"/>
+}

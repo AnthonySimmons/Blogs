@@ -1,0 +1,34 @@
+﻿@using Blogs.Models
+@model Tag
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Tag</title>
+</head>
+<body style="background-color: teal; width: 1200px; height: 900px">
+    <div style="width:400px; margin:0 auto; vertical-align:central">
+        <h2>Add Tag</h2>
+        <div>
+            @using (Html.BeginForm())
+            {
+                <div>
+                    @Html.TextBoxFor(m => m.article, new { style = "display:none" })
+                </div>
+                <div>
+                    @Html.TextBoxFor(m => m.articleId, new { style = "display:none" })
+                </div>
+                <div>
+                    @Html.TextBoxFor(m => m.name)
+                </div>
+                <input type="submit" value="Add Tag">
+            }
+        </div>
+        </div>
+</body>
+</html>

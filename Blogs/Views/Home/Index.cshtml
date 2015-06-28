@@ -1,0 +1,62 @@
+﻿@using Blogs.Models
+@model List<PersonModel>
+@{
+    /*
+     * @model List<Person> is telling Razor to expect a List of People to be passed in as the
+     * file's model (Accessible elsewhere through "Model").
+     * */
+
+    //We haven't gotten to layout pages yet, but when we do, we'll need to change this.
+    //For now, just set to NULL.
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body style="background-color:teal; width:1200px; height:900px">
+    
+    <div style="width:800px; margin:0 auto;">
+        <!-- Html.ActionLink is the MVC equivalent of <a href="..."></a>
+            -->
+        @if((bool)Session["isadmin"] == true)
+        { 
+        <h3>@Html.ActionLink("Blogs", "BlogIndex", "Blog")</h3>
+        <h3>@Html.ActionLink("Logout", "Logout")</h3>
+        <table>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>Email Address</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Password</th>
+                <th>Writes Blogs</th>
+                <th>Is Admin</th>
+            </tr>
+
+            <!-- Loop through our List of People and create a new TR for each item -->
+            @foreach (PersonModel person in Model)
+            {
+                <tr>
+                    <td></td>
+                    <td>@Html.ActionLink("Edit", "Edit", new { id = person.Id })</td>
+
+                    <!-- Using the @@ tag will inject the object's value into HTML -->
+                    <td>@person.Email</td>
+                    <td>@person.FirstName</td>
+                    <td>@person.LastName</td>
+                    <td>(Protected)</td>
+                    <td>@person.CanWriteArticles</td>
+                    <td>@person.isAdmin</td>
+                </tr>
+            }
+        </table>
+        }
+    </div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+﻿@using Blogs.Models
+@model BlogEntry
+@{
+    ViewBag.Title = "Create";
+}
+<body style="align-items: center; background-color: teal; width: 1200px; height: 900px">
+    <div style="width:400px; margin:0 auto; vertical-align:central">
+        
+        <h4>@Html.ActionLink("View Blogs", "BlogIndex", "Blog", new { id = 1 }, null)</h4>
+        @if((bool)Session["canwrite"] == true)
+        { 
+        <h2 style="color:silver">Create Blog</h2>
+        using (Html.BeginForm())
+        {
+            <div>
+                Title: <br />
+                @Html.TextBoxFor(m => m.Title)
+            </div>
+            <div>
+                Content: <br />
+                @Html.TextAreaFor(m => m.Content, new { rows = 8, cols = 100, style = "max-width: 700px;" })
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.isAcceptingComments)
+                @Html.LabelFor(m => m.isAcceptingComments)
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.isVisible)
+                @Html.LabelFor(m => m.isVisible)
+            </div>
+            <input id="btnCreate" type="submit" value="Create Entry" />
+        }
+        }
+    </div>
+</body>

@@ -1,0 +1,41 @@
+﻿@using cpts483.Models
+@using cpts483.Models.ViewModels
+@model BlogEntry
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <h4>@Html.ActionLink("My Blogs", "Index", "Wednesday", new { id = 1 }, null)</h4>
+        <h2>Edit Blog Entry</h2>
+        @using (Html.BeginForm())
+        {
+            <div>
+                Title: <br />
+                @Html.EditorFor(m => m.Title, new { @Value = Model.Title })
+            </div>
+            <div>
+                Content: <br />
+                @Html.EditorFor(m => m.Content, new { @Value = Model.Content, rows = 8, cols = 100, style = "max-width: 700px;" })
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.isAcceptingComments, new { @Value = Model.isAcceptingComments })
+                @Html.LabelFor(m => m.isAcceptingComments)
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.isVisible, new { @Value = Model.isVisible })
+                @Html.LabelFor(m => m.isVisible)
+            </div>
+            <input id="btnCreate" type="submit" value="Done" />
+        }
+    </div>
+</body>
+</html>

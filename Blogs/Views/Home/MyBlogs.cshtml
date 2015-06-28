@@ -1,0 +1,57 @@
+﻿@using Blogs
+@using Blogs.Models
+@model PersonModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body style="background-image:url('background.jpg')">
+    
+    <div style="width:600px; margin:0 auto;">
+        @using (Html.BeginForm())
+        {
+            if (@Session["userid"] == null)
+            {
+                @Html.ValidationSummary(false)
+            }
+            else
+            {
+                
+                <h3 style="color:silver">@Html.ActionLink("Logout", "Login")   @Html.ActionLink("Index", "Index")   @Html.ActionLink("Create New User", "Create")  @Html.ActionLink("Delete Account", "DeleteAccount", new { id = Model.Id })</h3>
+                <h2 style="color:silver">@Html.ActionLink("New Blog", "NewBlog", new { id = Model.Id }, null)</h2>
+                <h1 style="color:silver" id="msg"> @Session["name"]'s Blogs</h1>
+            }
+        }
+    </div>
+
+    <div style="background-image:url(background.jpg); width:1200px; height:900px">
+        <h2 style="color:silver">My Blogs</h2>
+        @if (Model != null && Model.blogPosts != null)
+{
+    foreach (BlogPost bp in Model.blogPosts)
+    {
+        <h4 style="color:silver">@bp.blog</h4>
+        foreach (string com in bp.comments)
+        {
+            <h5 style="color:silver">@com</h5>
+    
+        }
+
+        <h3 style="color:silver">Post a Comment</h3>
+        using (Html.BeginForm("NewComment", "Home", FormMethod.Post))
+        {
+            <h3 style="color:silver">@Html.TextAreaFor(b => b.newComment, 2, 80, null)</h3>
+    <input style="color:silver" id="btn" type="submit" value="Post Comment" />
+        }
+    }
+}
+    </div>
+</body>
+</html>

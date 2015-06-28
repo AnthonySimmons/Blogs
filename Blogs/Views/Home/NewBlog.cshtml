@@ -1,0 +1,43 @@
+﻿@using Blogs
+@using Blogs.Models
+@model PersonModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>New Blog</title>
+    <script type="text/javascript" src="~/Scripts/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            
+        });
+
+            function textAreaClick(elem) {
+                elem.value = "";
+            }
+            function btnPostClick(event) {
+            
+            }
+    </script>
+</head>
+<body style="background-image: url(background.jpg); width: 1200px; height: 900px">
+    <div style="width:1000px; margin:0 auto;">
+        <h1 style="color:silver">New Blog Post</h1>
+        @using (Html.BeginForm("NewBlog", "Home", FormMethod.Post))
+        {
+            <h3>@Html.TextAreaFor(m => m.newBlog, 30, 80, null)</h3>
+            <input id="btn" type="submit" value="Submit Blog" />
+        }
+    </div>
+</body>
+</html>

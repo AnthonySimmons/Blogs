@@ -1,0 +1,31 @@
+﻿@using Blogs.Models
+@model Comment
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Post Comment</title>
+</head>
+<body style="background-color: teal; width: 1200px; height: 900px">
+    <div style="width:400px; margin:0 auto; vertical-align:central">
+        <h2>Post a Comment</h2>
+        <div>
+        @using (Html.BeginForm())
+        {
+            <div>
+                @Html.TextBoxFor(m => m.blogId, new { style = "display:none"})
+            </div>
+            <div>
+                @Html.TextAreaFor(m => m.content, new { style = "width:500px, height:75px" })
+            </div>
+            <input id="btnComment" type="submit" value="Post Comment" />
+        }
+        </div>
+    </div>
+</body>
+</html>

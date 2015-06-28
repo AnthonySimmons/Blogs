@@ -1,0 +1,99 @@
+﻿@using cpts483.Models
+@model BlogEntry
+@{
+       Layout = null;
+}
+
+<head>
+    <title></title>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            
+            //hide submit button as we don't need it when JS is enabled
+            //$('#submit-button-span').css("display", "none");
+
+            function sendPost() {
+                
+                var blogId = $('#comm').val();
+                alert(blogId.toString())
+                //get new item using an ajax call
+                $.ajax({
+                    url: "@Url.Action("Comment")",
+                    data: { com: blogId },
+                    dataType: "html"
+                    //success: function (result) {
+                    //   $('#blog-content').html(result);
+                    //}
+                });
+            }
+
+            //listen to form submit requests
+            $('#comment-form').submit(function (event) {
+                
+                //submit changes ajax style so cancel form request
+                event.preventDefault();
+
+                //get selected value
+                var blogId = $('#comm').val();
+                alert(blogId.toString())
+                //get new item using an ajax call
+                $.ajax({
+                    url: "@Html.Raw(Url.Action("Comment", new { com = "asdfasdf" }))",
+                    data: { 'com': blogId },
+                    dataType: "html",
+                    success: function (result) {
+                        //$('#blog-content').html(result);
+                        alert(result.toString());
+                    }
+                });
+            });
+            
+            //<div>
+              //  Html.TextBoxFor(m => m.NewComment, new { style = "width:500px"})
+            //</div>
+            
+
+        });
+    </script>
+</head>
+
+
+
+@if(Model != null && Model.Author != null && Model.Author != "")
+{ 
+    <h2>@Model.Author's Blogs</h2>
+
+//using (Html.BeginForm("Comment", "Wednesday", new {id = Model.Id}, FormMethod.Post))
+using (Html.BeginForm("Comment", "Wednesday", FormMethod.Post, new { id = "comment-form" }))
+{
+    if (Model.isVisible)
+    {
+        
+           <h4>@Html.ActionLink("Delete Blog", "DeleteBlog", "Wednesday", new { id = Model.Id }, null)</h4>
+            <h4>@Html.ActionLink("Edit Blog", "EditBlogStart", "Wednesday", new { id = Model.Id }, null)</h4>
+        <h3>Title: @Model.Title</h3>
+        <h4>Author: @Model.Author</h4>
+        <h5>Date Posted: @Model.DatePosted.ToShortDateString() @Model.DatePosted.ToShortTimeString()</h5>
+        @Html.Raw(Model.Content)
+        foreach (Comment com in Model.ArticleComments)
+        { 
+            <h5>@com.datePosted.ToShortTimeString() @com.author Posted: </h5>
+            <h3>@com.content</h3>
+            <h5>@Html.ActionLink("Delete Comment", "DeleteComment", new { id = com.id, blogId = Model.Id }, null)</h5>
+        }
+
+        if (Model.isAcceptingComments)
+        {
+            <div>
+                <textarea id="comm" style="width:600px">
+
+                </textarea>
+            </div>
+    <span id="post-button-span">
+        <input type="submit" id="post-button" value="Post Comment" onclick="sendPost"/>
+    </span>
+    
+        }
+    }
+}
+}
